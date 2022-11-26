@@ -70,6 +70,24 @@ function onMapClick(e) {
   console.log(e)
   var marker = new L.Marker(e.latlng, {draggable:true}).bindPopup(`Marker is ${counter}`);
   // counter+=1
+  const lat = e.latlng.lat
+  const lon = e.latlng.lng
+  let Camera = String(counter)
+  const myBody =  JSON.stringify( {"camera":Camera,"coordinates":{"latitude":lat,"longitude":lon}})
+
+    const userAction = async () => {
+      const response = await fetch('http://localhost:4000/data', {
+        method: 'POST',
+        body: myBody, // string or object
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const myJson = await response.json(); //extract JSON from the http response
+      // do something with myJson
+    }
+    userAction()
+  console.log(e.latlng);
   map.addLayer(marker);
   markers[marker._leaflet_id] = marker;
   console.log(markers);
